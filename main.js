@@ -343,18 +343,70 @@
   localesEl.addEventListener('click', e => { const b = e.target.closest('[data-loc]'); if (b) { locales = b.dataset.loc; renderLocales(); } });
   renderLocales();
 
-  const form = $('#form'), sent = $('#sent');
-  form.addEventListener('submit', e => {
+  // Web3Forms access key (free, delivers to the email it was created for): https://web3forms.com
+  const WEB3FORMS_KEY = '42a8b15d-ca89-4f93-aad2-16f86bbb2c49';
+  const WA_NUMBER = '5492646237685';
+
+  const form = $('#form'), sent = $('#sent'), submitBtn = $('.btn-submit', form), formErr = $('#formErr');
+  const waLink = data => {
+    const lines = [
+      `Hola! Quiero pedir una demo de Kipo.`,
+      `Nombre: ${data.nombre}`,
+      data.comercio && `Comercio: ${data.comercio}`,
+      `WhatsApp: ${data.tel}`,
+      data.email && `Email: ${data.email}`,
+      `Locales: ${data.locales}`,
+      data.msg && `Mensaje: ${data.msg}`,
+    ].filter(Boolean);
+    return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
+  };
+  const send = async data => {
+    if (WEB3FORMS_KEY.startsWith('YOUR_')) throw new Error('Web3Forms key not configured');
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: `Pedido de demo Kipo: ${data.comercio || data.nombre}`,
+        from_name: 'Landing Kipo',
+        botcheck: data.botcheck,
+        Nombre: data.nombre,
+        Comercio: data.comercio,
+        WhatsApp: data.tel,
+        Email: data.email,
+        Locales: data.locales,
+        Mensaje: data.msg,
+      }),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || !json.success) throw new Error(json.message || `HTTP ${res.status}`);
+  };
+
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(form));
     data.locales = locales;
-    // TODO: send `data` to a backend / form service. For now it only shows the confirmation.
-    $('#sentName').textContent = String(data.nombre || '').trim().split(' ')[0];
-    form.hidden = true;
-    sent.hidden = false;
+    formErr.hidden = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
+    try {
+      await send(data);
+      $('#sentName').textContent = String(data.nombre || '').trim().split(' ')[0];
+      $('#sentWa').href = waLink(data);
+      form.hidden = true;
+      sent.hidden = false;
+    } catch (err) {
+      console.error('[contact form]', err);
+      $('#formErrWa').href = waLink(data);
+      formErr.hidden = false;
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = CTA_LABEL;
+    }
   });
   $('#resetForm').addEventListener('click', () => {
     form.reset();
+    formErr.hidden = true;
     sent.hidden = true;
     form.hidden = false;
   });

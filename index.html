@@ -199,6 +199,7 @@
       <span class="sent-ico">✓</span>
       <h3>¡Gracias, <span id="sentName"></span>!</h3>
       <p>Recibimos tu pedido. Te contactamos en menos de 24 horas hábiles para coordinar la demo.</p>
+      <a class="btn-wa" id="sentWa" href="https://wa.me/5492646237685" target="_blank" rel="noopener"><img src="assets/whatsapp.svg" alt="">¿Apurado? Escribinos por WhatsApp</a>
       <button type="button" class="link-btn" id="resetForm">Enviar otra consulta</button>
     </div>
     <form id="form" class="form">
@@ -215,7 +216,12 @@
       <label>¿Algo que quieras contarnos? <span class="optional">Opcional</span>
         <textarea name="msg" rows="3" placeholder="Hoy llevo el stock en un cuaderno…"></textarea>
       </label>
+      <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <button type="submit" class="btn-submit" data-cta>Pedir una demo</button>
+      <div class="form-err" id="formErr" role="alert" hidden>
+        <p>No pudimos enviar tu pedido. Mandánoslo por WhatsApp, ya va con tus datos:</p>
+        <a class="btn-wa" id="formErrWa" href="https://wa.me/5492646237685" target="_blank" rel="noopener"><img src="assets/whatsapp.svg" alt="">Enviar por WhatsApp</a>
+      </div>
       <p class="fine">Sin compromiso. No compartimos tus datos.</p>
     </form>
   </div>
@@ -226,7 +232,7 @@
 <footer class="ftr">
   <div class="wrap ftr-in">
     <div class="ftr-brand">
-      <span class="ftr-logo"><img src="assets/kipo-mark.png" alt="" class="ftr-mark"><img src="assets/kipo-wordmark.png" alt="Kipo" class="ftr-word"></span>
+      <img src="assets/kipo-logo-full.png" alt="Kipo" class="ftr-logo">
       <span>Tu negocio, siempre en control</span>
     </div>
     <span>© 2026 Kipo · G1 Software Solutions</span>
