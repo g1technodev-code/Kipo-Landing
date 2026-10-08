@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kipo · Control de stock para comercios de barrio</title>
+<meta name="description" content="Kipo ordena el stock de tu comercio en un solo lugar. Escaneás, cargás la factura del proveedor y el inventario queda al día, en todas tus sucursales y desde el celular.">
+<link rel="icon" type="image/png" href="assets/kipo-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Questrial&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="hdr" id="hdr">
+  <div class="hdr-in">
+    <a href="#" class="brand">
+      <img src="assets/kipo-mark.png" alt="" class="brand-mark">
+      <img src="assets/kipo-wordmark.png" alt="Kipo" class="brand-word">
+    </a>
+    <nav class="nav">
+      <a href="#funciones">Funciones</a>
+      <a href="#demo">Probalo</a>
+      <a href="#como">Cómo funciona</a>
+      <a href="#faq">Preguntas</a>
+      <a href="#contacto" class="nav-cta" data-cta>Pedir una demo</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- Hero -->
+<section class="wrap hero">
+  <div class="hero-copy">
+    <div class="badge"><span class="dot"></span>Para kioscos, almacenes y comercios de barrio</div>
+    <h1 class="hero-title">Sabé qué tenés, qué falta y cuánto vale.</h1>
+    <p class="hero-lead">Kipo ordena el stock de tu comercio en un solo lugar. Escaneás, cargás la factura del proveedor y el inventario queda al día, en todas tus sucursales y desde el celular.</p>
+    <div class="hero-actions">
+      <a href="#contacto" class="btn btn-primary" data-cta>Pedir una demo</a>
+      <a href="#como" class="btn btn-ghost">Ver cómo funciona</a>
+    </div>
+  </div>
+
+  <div class="hero-panel" id="heroPanel">
+    <div class="hero-panel-bg"></div>
+    <div class="card inv">
+      <div class="inv-head">
+        <span class="serif inv-title">Inventario</span>
+        <span class="pill pill-blue">Sucursal Centro</span>
+      </div>
+      <div class="inv-stats">
+        <div><span class="stat-k">Valor en stock</span><span class="stat-v" id="heroValue"></span></div>
+        <div><span class="stat-k">Stock bajo</span><span class="stat-v accent" id="heroLow"></span></div>
+        <div><span class="stat-k">Ventas hoy</span><span class="stat-v" id="heroSales"></span></div>
+      </div>
+      <div class="inv-rows" id="heroRows"></div>
+    </div>
+    <div class="hero-alert" id="heroAlert">
+      <span class="hero-alert-ico">!</span>
+      <div><span class="hero-alert-t" id="alertT"></span><span class="hero-alert-s" id="alertS"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Problem -->
+<section class="dark">
+  <div class="wrap problem">
+    <h2 data-reveal class="h-problem">Contar a mano, cuadernos, planillas que nadie actualiza.</h2>
+    <div data-reveal class="problem-copy">
+      <p>En un comercio chico el stock se lleva de memoria. Hasta que falta algo un sábado a la tarde, o sobra mercadería que nadie vende y es plata parada.</p>
+      <p class="problem-hl">Con Kipo sabés en segundos qué tenés y dónde, sin contar de nuevo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="funciones" class="wrap section stack-48">
+  <div data-reveal class="sec-head">
+    <span class="eyebrow">Funciones</span>
+    <h2 class="h2 tight">Todo el stock de tu negocio, bajo control.</h2>
+  </div>
+  <div class="features" id="features"></div>
+</section>
+
+<!-- Demo -->
+<section id="demo" class="dark">
+  <div class="wrap section stack-44">
+    <div data-reveal class="demo-head">
+      <div class="sec-head">
+        <span class="eyebrow eyebrow-cyan">Probalo acá</span>
+        <h2 class="h2">Hacé una venta y mirá cómo baja el stock.</h2>
+      </div>
+      <button type="button" class="link-reset" id="resetDemo">Reiniciar demo</button>
+    </div>
+    <div data-reveal class="demo-grid">
+      <div class="demo-card">
+        <div class="demo-card-head">
+          <span class="serif demo-title">Productos</span>
+          <span class="muted">Tocá un producto para sumarlo</span>
+        </div>
+        <div class="products" id="products"></div>
+      </div>
+      <div class="demo-card cart">
+        <div class="cart-head"><span class="serif demo-title" id="cartTarget">Carrito</span><span class="muted" id="cartCount"></span></div>
+        <div class="cart-empty" id="cartEmpty">Todavía no agregaste productos</div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="pay">
+          <span class="mono-label">Medio de pago</span>
+          <div class="pay-grid" id="pays"></div>
+        </div>
+        <div class="cart-total"><span>Total</span><span class="serif" id="total"></span></div>
+        <div class="toast" id="toast" hidden><strong id="toastTitle"></strong><br><span id="toastBody"></span></div>
+        <button type="button" class="btn-confirm" id="confirm">Confirmar venta</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reports -->
+<section class="wrap section reports">
+  <div data-reveal class="sec-head gap-18">
+    <span class="eyebrow">Reportes</span>
+    <h2 class="h2">Mirá cómo viene la semana.</h2>
+    <p class="lead">Ingresos por día, ticket promedio y ganancia, calculados solos a partir de cada venta.</p>
+  </div>
+  <div class="chart" id="chart">
+    <div class="chart-head">
+      <span class="serif chart-title">Evolución de ingresos</span>
+      <span class="muted">Total semana <strong>$178k</strong></span>
+    </div>
+    <div class="bars" id="bars"></div>
+    <div class="bar-days" id="barDays"></div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section id="como" class="soft">
+  <div class="wrap section stack-52">
+    <div data-reveal class="sec-head">
+      <span class="eyebrow">Cómo funciona</span>
+      <h2 class="h2 tight">Empezás en una tarde.</h2>
+    </div>
+    <div class="steps">
+      <div data-reveal class="step"><span class="step-n">1</span><h3>Cargá tus productos</h3><p>Importá tu lista o escaneá los códigos. Te ayudamos con la carga inicial.</p></div>
+      <div data-reveal class="step"><span class="step-n">2</span><h3>Registrá compras y ventas</h3><p>Las facturas de proveedores suman stock; las ventas lo descuentan.</p></div>
+      <div data-reveal class="step"><span class="step-n">3</span><h3>Mirá todo en un lugar</h3><p>Stock, alertas y reportes de todas tus sucursales, desde la compu o el celular.</p></div>
+    </div>
+    <div data-reveal>
+      <div class="shots">
+        <div class="shot-tabs" id="shotTabs"></div>
+        <div class="shot-frame">
+          <div class="shot-view" id="shotView"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="wrap-narrow section stack-36">
+  <h2 data-reveal class="h2 tight">Preguntas frecuentes</h2>
+  <div class="faqs" id="faqs"></div>
+</section>
+
+<!-- CTA -->
+<section id="cta" class="cta-sec">
+  <div data-reveal class="cta-box">
+    <div class="cta-circle"></div>
+    <h2 class="cta-title">Dejá de adivinar tu stock.</h2>
+    <div class="cta-side">
+      <p>Te ayudamos a cargar tus productos y a dejar Kipo funcionando en tu negocio.</p>
+      <a href="#contacto" class="btn btn-dark" data-cta>Pedir una demo</a>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contacto" class="wrap contact">
+  <div data-reveal class="contact-copy">
+    <span class="eyebrow">Contacto</span>
+    <h2 class="h2 tight">Pedí tu demo y te mostramos Kipo con tus productos.</h2>
+    <p class="lead">Dejanos tus datos y te escribimos para coordinar una demo de 20 minutos, por videollamada o en tu local.</p>
+    <div class="channels">
+      <a href="https://wa.me/5492646237685" target="_blank" rel="noopener" class="channel">
+        <span class="channel-ico wa"><img src="assets/whatsapp.svg" alt="WhatsApp"></span>
+        <span class="channel-txt"><span>Escribinos por WhatsApp</span><span class="muted">+54 9 2646237685</span></span>
+      </a>
+      <a href="mailto:g1technodev@gmail.com" class="channel">
+        <span class="channel-ico gm"><img src="assets/gmail.svg" alt="Gmail"></span>
+        <span class="channel-txt"><span>Mandanos un mail</span><span class="muted">g1technodev@gmail.com</span></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="sent" id="sent" hidden>
+      <span class="sent-ico">✓</span>
+      <h3>¡Gracias, <span id="sentName"></span>!</h3>
+      <p>Recibimos tu pedido. Te contactamos en menos de 24 horas hábiles para coordinar la demo.</p>
+      <button type="button" class="link-btn" id="resetForm">Enviar otra consulta</button>
+    </div>
+    <form id="form" class="form">
+      <div class="fields">
+        <label>Tu nombre<input name="nombre" required placeholder="Ana García" autocomplete="name"></label>
+        <label>Nombre del comercio<input name="comercio" placeholder="Almacén Don José" autocomplete="organization"></label>
+        <label>WhatsApp<input name="tel" required type="tel" placeholder="11 1234-5678" autocomplete="tel"></label>
+        <label>Email<input name="email" type="email" placeholder="ana@micomercio.com" autocomplete="email"></label>
+      </div>
+      <div class="locales-wrap">
+        <span class="field-label">¿Cuántos locales tenés?</span>
+        <div class="seg" id="locales"></div>
+      </div>
+      <label>¿Algo que quieras contarnos? <span class="optional">Opcional</span>
+        <textarea name="msg" rows="3" placeholder="Hoy llevo el stock en un cuaderno…"></textarea>
+      </label>
+      <button type="submit" class="btn-submit" data-cta>Pedir una demo</button>
+      <p class="fine">Sin compromiso. No compartimos tus datos.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="ftr">
+  <div class="wrap ftr-in">
+    <div class="ftr-brand">
+      <span class="ftr-logo"><img src="assets/kipo-mark.png" alt="" class="ftr-mark"><img src="assets/kipo-wordmark.png" alt="Kipo" class="ftr-word"></span>
+      <span>Tu negocio, siempre en control</span>
+    </div>
+    <span>© 2026 Kipo · G1 Software Solutions</span>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
